@@ -3,16 +3,18 @@
 import { useState } from "react";
 
 import DatePicker from "react-datepicker";
-import { Editor, EditorState } from "draft-js";
-
-import "draft-js/dist/Draft.css";
+import { Editor } from "react-draft-wysiwyg";
+import { EditorState } from "draft-js";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import "react-datepicker/dist/react-datepicker.css";
 
 export default function Login() {
   const [startDate, setStartDate] = useState(new Date());
-  const [editorState, setEditorState] = useState(() =>
-    EditorState.createEmpty()
-  );
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
+
+  const onEditorStateChange = (editorState: EditorState) => {
+    setEditorState(editorState);
+  };
 
   return (
     <div className="home">
@@ -79,7 +81,7 @@ export default function Login() {
 
       {/* Modal */}
       <dialog id="my_modal_3" className="modal">
-        <div className="modal-box">
+        <div className="modal-box w-11/12 md:w-4/5">
           <form method="dialog">
             {/* if there is a button in form, it will close the modal */}
             <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
@@ -133,7 +135,13 @@ export default function Login() {
               type="file"
               className="file-input file-input-bordered w-full my-4 max-w-xs"
             />
-            <Editor editorState={editorState} onChange={setEditorState} />
+            <Editor
+              editorState={editorState}
+              toolbarClassName="toolbarClassName"
+              wrapperClassName="wrapperClassName"
+              editorClassName="editorClassName"
+              onEditorStateChange={onEditorStateChange}
+            />
           </div>
         </div>
       </dialog>
