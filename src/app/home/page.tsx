@@ -7,6 +7,7 @@ import { Editor } from "react-draft-wysiwyg";
 import { EditorState } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import "react-datepicker/dist/react-datepicker.css";
+import NewsList from "./components/NewsList/NewsList";
 
 export default function Login() {
   const [startDate, setStartDate] = useState(new Date());
@@ -31,52 +32,7 @@ export default function Login() {
           </button>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="table">
-            {/* head */}
-            <thead>
-              <tr>
-                <th>Autor</th>
-                <th>Nombre</th>
-                <th>Categoría</th>
-                <th></th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {/* row 1 */}
-              {"."
-                .repeat(20)
-                .split("")
-                .map((_, i) => (
-                  <tr key={i}>
-                    <td>
-                      <div className="flex items-center space-x-3">
-                        <div>
-                          <div className="font-bold">Gabriel Vega</div>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      Nombre noticia
-                      <br />
-                      {/* <span className="badge badge-ghost badge-sm">
-                        Desktop Support Technician
-                      </span> */}
-                    </td>
-                    <td>Politica</td>
-                    <th>
-                      <button className="btn btn-ghost btn-xs">Editar</button>
-                    </th>
-                    <th>
-                      <button className="btn btn-ghost btn-xs">Eliminar</button>
-                    </th>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
-        </div>
-        <button className="btn btn-success mt-4 w-full">Ver más</button>
+        <NewsList />
       </div>
 
       {/* Modal */}

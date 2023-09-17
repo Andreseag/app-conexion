@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { apiLogin } from "@/api/auth";
+import Alert from "@/components/Alert/Alert";
 
 export default function Login() {
   const router = useRouter();
@@ -69,28 +70,18 @@ export default function Login() {
             className="btn btn-success mt-4 w-full"
             disabled={loader}
           >
-            Ingresar
+            {loader ? (
+              <div className="flex items-center">
+                <p>Cargando...</p>
+                <span className="loading ml-2 loading-spinner loading-sm"></span>
+              </div>
+            ) : (
+              "Ingresar"
+            )}
           </button>
         </div>
       </div>
-      {showAlert && (
-        <div className="alert alert-error absolute w-11/12 md:w-96 bottom-2 right-0">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="stroke-current shrink-0 h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-          <span>Error al intentar ingresar.</span>
-        </div>
-      )}
+      {showAlert && <Alert text="Usuario o contraseña incorrectos" />}
     </div>
   );
 }
