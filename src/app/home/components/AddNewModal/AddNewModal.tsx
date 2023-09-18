@@ -5,12 +5,14 @@ import DatePicker from "react-datepicker";
 import { Editor } from "react-draft-wysiwyg";
 import { EditorState, convertToRaw } from "draft-js";
 import draftToHtml from "draftjs-to-html";
+import { createNew } from "@/api/news";
+import { CreateNewBody } from "../types";
 
 const AddNewModal = () => {
   const [newDate, setNewDate] = useState(new Date());
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [file, setFile] = useState<File>();
-  const [newBody, setNewBody] = useState({
+  const [newBody, setNewBody] = useState<CreateNewBody>({
     news: {
       title: "",
       description: "",
@@ -41,7 +43,28 @@ const AddNewModal = () => {
   const onEditorStateChange = (editorState: EditorState) => {
     setEditorState(editorState);
     const getHtml = draftToHtml(convertToRaw(editorState.getCurrentContent()));
-    console.log(getHtml);
+    setNewBody({
+      ...newBody,
+      news: {
+        ...newBody.news,
+        newsbody: getHtml,
+      },
+    });
+  };
+
+  const pickerHandler = (date: any) => {
+    setNewDate(date);
+    setNewBody({
+      ...newBody,
+      news: {
+        ...newBody.news,
+        publicationdate: date.toString(),
+      },
+    });
+  };
+
+  const handleButtonClick = () => {
+    createNew(newBody);
   };
 
   return (
@@ -63,7 +86,7 @@ const AddNewModal = () => {
             <input
               type="text"
               placeholder="Título de la noticia"
-              className="input input-bordered input-accent w-full"
+              className="input input-bordered w-full"
               name="title"
               onChange={handleChange}
             />
@@ -87,7 +110,7 @@ const AddNewModal = () => {
             <input
               type="text"
               placeholder="Autor de la noticia"
-              className="input input-bordered input-accent w-full"
+              className="input input-bordered w-full"
               name="author"
               onChange={handleChange}
             />
@@ -96,10 +119,7 @@ const AddNewModal = () => {
             <label className="label">
               <span className="label-text">Fecha</span>
             </label>
-            <DatePicker
-              selected={newDate}
-              onChange={(date: any) => setNewDate(date)}
-            />
+            <DatePicker selected={newDate} onChange={pickerHandler} />
           </div>
 
           <input
@@ -117,6 +137,25 @@ const AddNewModal = () => {
             editorClassName="editorClassName"
             onEditorStateChange={onEditorStateChange}
           />
+
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text">Descargos (opcional)</span>
+            </label>
+            <textarea
+              className="textarea textarea-bordered h-24"
+              placeholder="Descripción de la noticia"
+              name="discharges"
+              onChange={handleChange}
+            ></textarea>
+            <label className="label"></label>
+          </div>
+          <button
+            onClick={handleButtonClick}
+            className="btn btn-success w-full"
+          >
+            Crear noticia
+          </button>
         </div>
       </div>
     </dialog>

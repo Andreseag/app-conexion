@@ -1,3 +1,5 @@
+import { CreateNewBody } from "@/app/home/components/types";
+
 const API_URL = process.env.API;
 const news = `${API_URL}/news`;
 
@@ -16,9 +18,10 @@ export async function getNews() {
   return res.json();
 }
 
-export async function createNew() {
+export async function createNew(body: CreateNewBody) {
   const res = await fetch(news, {
     method: "POST",
+    body: JSON.stringify(body),
   });
   // The return value is *not* serialized
   // You can return Date, Map, Set, etc.
