@@ -9,11 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@rpldy/uploader": "^1.5.0",
+    "@rpldy/uploady": "^1.5.0",
     "@types/node": "20.5.9",
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",
     "babel-polyfill": "^6.26.0",
     "draft-js": "^0.11.7",
+    "draftjs-to-html": "^0.9.1",
     "eslint": "8.48.0",
     "eslint-config-next": "13.4.19",
     "firebase": "^10.3.1",
@@ -27,6 +30,7 @@
   },
   "devDependencies": {
     "@types/draft-js": "^0.11.12",
+    "@types/draftjs-to-html": "^0.8.1",
     "@types/react-datepicker": "^4.15.0",
     "@types/react-draft-wysiwyg": "^1.13.4",
     "autoprefixer": "^10.4.15",

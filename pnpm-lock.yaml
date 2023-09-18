@@ -5,6 +5,12 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@rpldy/uploader':
+    specifier: ^1.5.0
+    version: 1.5.0
+  '@rpldy/uploady':
+    specifier: ^1.5.0
+    version: 1.5.0(react-dom@18.2.0)(react@18.2.0)
   '@types/node':
     specifier: 20.5.9
     version: 20.5.9
@@ -20,6 +26,9 @@ dependencies:
   draft-js:
     specifier: ^0.11.7
     version: 0.11.7(react-dom@18.2.0)(react@18.2.0)
+  draftjs-to-html:
+    specifier: ^0.9.1
+    version: 0.9.1
   eslint:
     specifier: 8.48.0
     version: 8.48.0
@@ -55,6 +64,9 @@ devDependencies:
   '@types/draft-js':
     specifier: ^0.11.12
     version: 0.11.12
+  '@types/draftjs-to-html':
+    specifier: ^0.8.1
+    version: 0.8.1
   '@types/react-datepicker':
     specifier: ^4.15.0
     version: 4.15.0(react-dom@18.2.0)(react@18.2.0)
@@ -807,6 +819,83 @@ packages:
     resolution: {integrity: sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==}
     dev: false
 
+  /@rpldy/abort@1.5.0:
+    resolution: {integrity: sha512-aIIYak/RpaxPS57sUfsqAX0oBApeJTD45y8Z1hBKeYFWvACI0KE9jHZsD6ObvN0561ANdly6lm6EfTU8+HukVw==}
+    dependencies:
+      '@rpldy/raw-uploader': 1.5.0
+      '@rpldy/shared': 1.5.0
+      '@rpldy/simple-state': 1.5.0
+    dev: false
+
+  /@rpldy/life-events@1.5.0:
+    resolution: {integrity: sha512-vM1UjVh3jxO2PvxNa1qq8uintgRUXOcTu0bMmNnSRSpbii/Gb3+/lBWUbe+JqnE4m4p1aG7Q/RUHYqh2ZCBUVw==}
+    dependencies:
+      '@rpldy/shared': 1.5.0
+    dev: false
+
+  /@rpldy/raw-uploader@1.5.0:
+    resolution: {integrity: sha512-Uv8WFaEXldzOjU0SGLgyZnTdCXdjKmVKIPOOeTEdRGeu5z2Mr49o0a0EjQ3IUIJrz0cbB49unUiFGQdqOWI0QA==}
+    dependencies:
+      '@rpldy/life-events': 1.5.0
+      '@rpldy/shared': 1.5.0
+    dev: false
+
+  /@rpldy/sender@1.5.0:
+    resolution: {integrity: sha512-2IXIGD9iXljNE2Kq+hZDM/aqOCoyf934DMHYhixH+t09w1CJLSl0yiv5hDpMQGknOPRqZGEeE8qW0DUYZx3EGg==}
+    dependencies:
+      '@rpldy/shared': 1.5.0
+    dev: false
+
+  /@rpldy/shared-ui@1.5.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-tcq52m3WZDZ8FR4a6VnLi8mB1HKLJPK2sQw6XGFGLVUS8KADan/S4BqnX5EcRfqhEJ4U52vsZA5FuO9TgaEUQQ==}
+    peerDependencies:
+      react: '>=16.8'
+      react-dom: '>=16.8'
+    dependencies:
+      '@rpldy/shared': 1.5.0
+      '@rpldy/uploader': 1.5.0
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /@rpldy/shared@1.5.0:
+    resolution: {integrity: sha512-ExOHPwEKxhlOCUpeb4dMhE9MCKIncJYpw+w0hgUUqF5orUmFlzHq1kSij2IRV2rEidGBlK1+90IyrEvAzaRadg==}
+    dependencies:
+      invariant: 2.2.4
+      just-throttle: 4.2.0
+    dev: false
+
+  /@rpldy/simple-state@1.5.0:
+    resolution: {integrity: sha512-ukfKdsHxbf9K3RYvV+COtELiE9KmSF+aXXH5F7biQiZNV3hnzWWcZwtyDKW6xBiAtUPEnSkrsDxHEKeaPLWBEw==}
+    dependencies:
+      '@rpldy/shared': 1.5.0
+    dev: false
+
+  /@rpldy/uploader@1.5.0:
+    resolution: {integrity: sha512-nKQAuuAIk+fkHteaxciLtdms10hqPRYvuP49RAZ5ynDhvAJ3YRtIrGS1sZb2jxgCshJPzSh+BEen+GC09REQhw==}
+    dependencies:
+      '@rpldy/abort': 1.5.0
+      '@rpldy/life-events': 1.5.0
+      '@rpldy/raw-uploader': 1.5.0
+      '@rpldy/sender': 1.5.0
+      '@rpldy/shared': 1.5.0
+      '@rpldy/simple-state': 1.5.0
+    dev: false
+
+  /@rpldy/uploady@1.5.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-gCz7xk7gtn3ZXnnYEuiPYxIja51nNsbGELreqd8wLhScPEYPui0tfbhfdLZ9ktB+GRl8V8+KAo6hIqCi5t0hVA==}
+    peerDependencies:
+      react: '>=16.8'
+      react-dom: '>=16.8'
+    dependencies:
+      '@rpldy/life-events': 1.5.0
+      '@rpldy/shared': 1.5.0
+      '@rpldy/shared-ui': 1.5.0(react-dom@18.2.0)(react@18.2.0)
+      '@rpldy/uploader': 1.5.0
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
   /@rushstack/eslint-patch@1.3.3:
     resolution: {integrity: sha512-0xd7qez0AQ+MbHatZTlI1gu5vkG8r7MYRUJAHPAHJBmGLs16zpkrpAVLvjQKQOqaXPDUBwOiJzNc00znHSCVBw==}
     dev: false
@@ -822,6 +911,12 @@ packages:
     dependencies:
       '@types/react': 18.2.21
       immutable: 3.7.6
+    dev: true
+
+  /@types/draftjs-to-html@0.8.1:
+    resolution: {integrity: sha512-NBkphQs+qZ/sAz/j1pCUaxkPAOx00LTsE88aMSSfcvK+UfCpjHJDqIMCkm6wKotuJvY5w0BtdRazQ0sAaXzPdg==}
+    dependencies:
+      '@types/draft-js': 0.11.12
     dev: true
 
   /@types/json5@0.0.29:
@@ -1409,6 +1504,10 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     transitivePeerDependencies:
       - encoding
+    dev: false
+
+  /draftjs-to-html@0.9.1:
+    resolution: {integrity: sha512-fFstE6+IayaVFBEvaFt/wN8vdj8FsTRzij7dy7LI9QIwf5LgfHFi9zSpvCg+feJ2tbYVqHxUkjcibwpsTpgFVQ==}
     dev: false
 
   /draftjs-utils@0.10.2(draft-js@0.11.7)(immutable@3.7.6):
@@ -2192,6 +2291,12 @@ packages:
       side-channel: 1.0.4
     dev: false
 
+  /invariant@2.2.4:
+    resolution: {integrity: sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==}
+    dependencies:
+      loose-envify: 1.4.0
+    dev: false
+
   /is-array-buffer@3.0.2:
     resolution: {integrity: sha512-y+FyyR/w8vfIRq4eQcM1EYgSTnmHXPqaF+IgzgraytCFq5Xh8lllDVmAZolPJiZttZLeFSINPYMaEJ7/vWUa1w==}
     dependencies:
@@ -2413,6 +2518,10 @@ packages:
       array.prototype.flat: 1.3.1
       object.assign: 4.1.4
       object.values: 1.1.7
+    dev: false
+
+  /just-throttle@4.2.0:
+    resolution: {integrity: sha512-/iAZv1953JcExpvsywaPKjSzfTiCLqeguUTE6+VmK15mOcwxBx7/FHrVvS4WEErMR03TRazH8kcBSHqMagYIYg==}
     dev: false
 
   /keyv@4.5.3:
