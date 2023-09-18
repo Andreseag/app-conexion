@@ -1,30 +1,37 @@
 "use client";
 
-import { getNews } from "@/api/news";
+import { deleteNew, getNews } from "@/api/news";
 import React, { useEffect, useState } from "react";
+import { NewsResponse } from "../types/NewResponse";
 
 const NewsList = () => {
-  const [news, setNews] = useState([]);
+  const [news, setNews] = useState<NewsResponse>();
+  const [newIdToDelete, setNewIdToDelete] = useState<number>(0);
 
-  const getNewsHandler = async () => {
+  const isNewsEmpty = (): boolean => {
+    return news?.result?.length === 0;
+  };
+
+  const confirmDeleteNew = async (id: number) => {
+    (window as any).my_modal_delete.showModal();
+    setNewIdToDelete(id);
+  };
+
+  const deleteNewHandler = async () => {
+    console.log("deleteNewHandler");
+    await deleteNew(newIdToDelete);
     const newsResponse = await getNews();
-
-    if (newsResponse.status) {
-      setNews({ ...news, ...newsResponse.data });
-    }
-  };
-
-  const showGetMoreButton = () => {
-    return news.length > 0;
-  };
-
-  const isNewsEmpty = () => {
-    return news.length === 0;
+    setNews(newsResponse);
+    (window as any).my_modal_delete.close();
   };
 
   useEffect(() => {
+    const getNewsHandler = async () => {
+      const newsResponse = await getNews();
+      setNews(newsResponse);
+    };
     getNewsHandler();
-  });
+  }, []);
 
   return (
     <div className="news-list">
@@ -36,7 +43,6 @@ const NewsList = () => {
               {/* head */}
               <thead>
                 <tr>
-                  <th>Autor</th>
                   <th>Nombre</th>
                   <th>Categoría</th>
                   <th></th>
@@ -45,44 +51,49 @@ const NewsList = () => {
               </thead>
               <tbody>
                 {/* row 1 */}
-                {"."
-                  .repeat(20)
-                  .split("")
-                  .map((_, i) => (
-                    <tr key={i}>
-                      <td>
-                        <div className="flex items-center space-x-3">
-                          <div>
-                            <div className="font-bold">Gabriel Vega</div>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        Nombre noticia
-                        <br />
-                        {/* <span className="badge badge-ghost badge-sm">
-                        Desktop Support Technician
-                      </span> */}
-                      </td>
-                      <td>Politica</td>
-                      <th>
-                        <button className="btn btn-ghost btn-xs">Editar</button>
-                      </th>
-                      <th>
-                        <button className="btn btn-ghost btn-xs">
-                          Eliminar
-                        </button>
-                      </th>
-                    </tr>
-                  ))}
+                {news?.result.map((item, i) => (
+                  <tr key={i}>
+                    <td>{item.news.title}</td>
+                    <td>{item.news.description}</td>
+                    <th>
+                      <button className="btn btn-ghost btn-xs">Editar</button>
+                    </th>
+                    <th>
+                      <button
+                        className="btn btn-ghost btn-xs"
+                        onClick={() => confirmDeleteNew(item.news.id)}
+                      >
+                        Eliminar
+                      </button>
+                    </th>
+                  </tr>
+                ))}
               </tbody>
             </table>
           )}
         </div>
-        {showGetMoreButton() && (
+        {/* {showGetMoreButton() && (
           <button className="btn btn-success mt-4 w-full">Ver más</button>
-        )}
+        )} */}
       </div>
+      <dialog id="my_modal_delete" className="modal">
+        <div className="modal-box">
+          <h3 className="font-bold text-lg">Eliminar noticia</h3>
+          <p className="py-4">¿Estás seguro que quieres eliminar la noticia?</p>
+          <div className="modal-action">
+            <button
+              className="btn btn-success"
+              onClick={() => deleteNewHandler()}
+            >
+              Confirmar
+            </button>
+            <form method="dialog">
+              {/* if there is a button in form, it will close the modal */}
+              <button className="btn">Cancelar</button>
+            </form>
+          </div>
+        </div>
+      </dialog>
     </div>
   );
 };

@@ -50,7 +50,7 @@ export async function updateNew(newId: number) {
 }
 
 export async function deleteNew(newId: number) {
-  const res = await fetch(news + newId, {
+  const res = await fetch(news + '/' + newId, {
     method: "DELETE",
   });
   // The return value is *not* serialized

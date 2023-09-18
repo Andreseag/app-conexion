@@ -21,7 +21,14 @@ const AddNewModal = () => {
       newsbody: "",
       discharges: "",
     },
-    media: [],
+    media: [
+      {
+        media:
+          "https://fastly.picsum.photos/id/11/2500/1667.jpg?hmac=xxjFJtAPgshYkysU_aqx2sZir-kIOjNR9vx0te7GycQ",
+        type: "IMAGEN,VIDEO,AUDIO",
+        reference: "CUALQUIER DATO DE SER REQUERIDO",
+      },
+    ],
   });
 
   const handleChange = (e: any) => {

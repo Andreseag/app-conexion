@@ -1,6 +1,6 @@
 export interface CreateNewBody {
   news: News;
-  media: any[];
+  media: Media[];
 }
 
 interface News {
@@ -10,4 +10,10 @@ interface News {
   publicationdate: string;
   newsbody: string;
   discharges: string;
+}
+
+interface Media {
+  type: string;
+  media: string;
+  reference: string
 }
