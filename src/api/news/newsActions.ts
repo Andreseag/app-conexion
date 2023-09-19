@@ -2,6 +2,9 @@ import { CreateNewBody } from "@/app/home/components/types";
 
 const API_URL = process.env.API;
 const news = `${API_URL}/news`;
+const headers = {
+  "Content-Type": "application/json",
+}
 
 export async function getNews() {
   const res = await fetch(news, {
@@ -21,6 +24,7 @@ export async function getNews() {
 export async function createNew(body: CreateNewBody) {
   const res = await fetch(news, {
     method: "POST",
+    headers,
     body: JSON.stringify(body),
   });
   // The return value is *not* serialized
@@ -31,7 +35,7 @@ export async function createNew(body: CreateNewBody) {
     throw new Error("Failed to fetch data");
   }
 
-  return res.json();
+  return res.ok;
 }
 
 export async function updateNew(newId: number) {

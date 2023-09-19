@@ -1,15 +1,23 @@
 "use client";
 
 import React, { ChangeEvent, useState } from "react";
+import { format } from "date-fns";
 import DatePicker from "react-datepicker";
 import { Editor } from "react-draft-wysiwyg";
 import { EditorState, convertToRaw } from "draft-js";
 import draftToHtml from "draftjs-to-html";
+
+// API
 import { createNew } from "@/api/news";
+
+// TYPES
 import { CreateNewBody } from "../types";
+import Alert from "@/components/Alert/Alert";
 
 const AddNewModal = () => {
   const [newDate, setNewDate] = useState(new Date());
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertValues, setAlertValues] = useState({ text: "", type: "" });
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [file, setFile] = useState<File>();
   const [newBody, setNewBody] = useState<CreateNewBody>({
@@ -61,17 +69,53 @@ const AddNewModal = () => {
 
   const pickerHandler = (date: any) => {
     setNewDate(date);
+    const formateDate = format(date, "yyyy-MM-dd");
     setNewBody({
       ...newBody,
       news: {
         ...newBody.news,
-        publicationdate: date.toString(),
+        publicationdate: formateDate,
       },
     });
   };
 
-  const handleButtonClick = () => {
-    createNew(newBody);
+  const validateForm = () => {
+    if (
+      newBody.news.title === "" ||
+      newBody.news.description === "" ||
+      newBody.news.author === "" ||
+      newBody.news.publicationdate === "" ||
+      newBody.news.newsbody === ""
+    ) {
+      return false;
+    }
+    return true;
+  };
+
+  const handleButtonClick = async () => {
+    if (!validateForm()) {
+      setAlertValues({
+        text: "Todos los campos son obligatorios",
+        type: "error",
+      });
+      setShowAlert(true);
+      setTimeout(() => {
+        setShowAlert(false);
+      }, 2000);
+      return;
+    }
+    const response = await createNew(newBody);
+    if (response) {
+      setAlertValues({
+        text: "Noticia creada correctamente",
+        type: "success",
+      });
+      setShowAlert(true);
+      setTimeout(() => {
+        setShowAlert(false);
+        window.location.reload();
+      }, 2000);
+    }
   };
 
   return (
@@ -85,7 +129,7 @@ const AddNewModal = () => {
         </form>
         <h3 className="font-bold text-lg">Agregar noticia</h3>
         <p className="py-4">Agrega la información para agregar tu noticia</p>
-        <div className="form-add">
+        <form onSubmit={handleButtonClick} className="form-add">
           <div className="form-control w-full">
             <label className="label">
               <span className="label-text">Título</span>
@@ -96,6 +140,7 @@ const AddNewModal = () => {
               className="input input-bordered w-full"
               name="title"
               onChange={handleChange}
+              required
             />
           </div>
           <div className="form-control">
@@ -107,6 +152,7 @@ const AddNewModal = () => {
               placeholder="Descripción de la noticia"
               name="description"
               onChange={handleChange}
+              required
             ></textarea>
             <label className="label"></label>
           </div>
@@ -120,6 +166,7 @@ const AddNewModal = () => {
               className="input input-bordered w-full"
               name="author"
               onChange={handleChange}
+              required
             />
           </div>
           <div className="form-control w-full">
@@ -134,6 +181,7 @@ const AddNewModal = () => {
             className="file-input file-input-bordered w-full my-4 max-w-xs"
             accept="image/png, image/jpeg"
             multiple
+            required
             onChange={handleFileChange}
           />
 
@@ -154,17 +202,18 @@ const AddNewModal = () => {
               placeholder="Descripción de la noticia"
               name="discharges"
               onChange={handleChange}
+              required
             ></textarea>
             <label className="label"></label>
           </div>
-          <button
-            onClick={handleButtonClick}
+          <input
+            type="submit"
+            value="Crear noticia"
             className="btn btn-success w-full"
-          >
-            Crear noticia
-          </button>
-        </div>
+          />
+        </form>
       </div>
+      {showAlert && <Alert text={alertValues.text} />}
     </dialog>
   );
 };

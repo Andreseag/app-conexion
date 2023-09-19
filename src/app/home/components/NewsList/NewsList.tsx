@@ -1,7 +1,11 @@
 "use client";
 
-import { deleteNew, getNews } from "@/api/news";
 import React, { useEffect, useState } from "react";
+
+// API
+import { deleteNew, getNews } from "@/api/news";
+
+// TYPES
 import { NewsResponse } from "../types/NewResponse";
 
 const NewsList = () => {
@@ -18,7 +22,6 @@ const NewsList = () => {
   };
 
   const deleteNewHandler = async () => {
-    console.log("deleteNewHandler");
     await deleteNew(newIdToDelete);
     const newsResponse = await getNews();
     setNews(newsResponse);
