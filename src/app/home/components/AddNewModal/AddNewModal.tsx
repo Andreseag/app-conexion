@@ -1,11 +1,16 @@
 "use client";
 
-import React, { ChangeEvent, use, useEffect, useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import { format, set } from "date-fns";
 import DatePicker from "react-datepicker";
-import { Editor } from "react-draft-wysiwyg";
+import dynamic from "next/dynamic";
+// import { Editor } from "react-draft-wysiwyg";
 import { EditorState, convertToRaw } from "draft-js";
 import draftToHtml from "draftjs-to-html";
+
+// STYLES
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import "react-datepicker/dist/react-datepicker.css";
 
 import { uploadFile } from "@/firebase/config";
 
@@ -15,6 +20,12 @@ import { createNew } from "@/api/news";
 // TYPES
 import { CreateNewBody, Media } from "../types";
 import Alert from "@/components/Alert/Alert";
+const EditorComponent = dynamic(
+  () => import("../EditorComponent/EditorComponent"),
+  {
+    ssr: false,
+  }
+);
 
 const formatDate: string = "yyyy-MM-dd";
 
@@ -59,19 +70,17 @@ const AddNewModal = () => {
     }
   };
 
-  const uploadFiles = async () => {
+  const uploadFiles = () => {
     const files: File[] = [...filesList];
     let results: Media[] = [];
     files.map(async (file) => {
       const result = await uploadFile(file);
-      results = [
-        ...results,
-        {
-          media: result,
-          type: "image",
-          reference: "news",
-        },
-      ];
+      results.push({
+        media: result,
+        type: "image",
+        reference: "news",
+      });
+      console.log(result);
     });
     console.log(results);
     return results;
@@ -211,15 +220,10 @@ const AddNewModal = () => {
             required
             onChange={handleFileChange}
           />
-
-          <Editor
+          <EditorComponent
             editorState={editorState}
-            toolbarClassName="toolbarClassName"
-            wrapperClassName="wrapperClassName"
-            editorClassName="editorClassName"
             onEditorStateChange={onEditorStateChange}
           />
-
           <div className="form-control">
             <label className="label">
               <span className="label-text">Descargos (opcional)</span>
