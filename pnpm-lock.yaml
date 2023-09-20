@@ -23,6 +23,9 @@ dependencies:
   babel-polyfill:
     specifier: ^6.26.0
     version: 6.26.0
+  clsx:
+    specifier: ^2.0.0
+    version: 2.0.0
   date-fns:
     specifier: ^2.30.0
     version: 2.30.0
@@ -1339,6 +1342,11 @@ packages:
       string-width: 4.2.3
       strip-ansi: 6.0.1
       wrap-ansi: 7.0.0
+    dev: false
+
+  /clsx@2.0.0:
+    resolution: {integrity: sha512-rQ1+kcj+ttHG0MKVGBUXwayCCF1oh39BF5COIpRzuCEv8Mwjv0XucrI2ExNTOn9IlLifGClWQcU9BrZORvtw6Q==}
+    engines: {node: '>=6'}
     dev: false
 
   /color-convert@2.0.1:

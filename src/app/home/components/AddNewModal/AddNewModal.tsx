@@ -148,15 +148,16 @@ const AddNewModal = () => {
       setShowAlert(true);
       setLoader(false);
       setTimeout(() => {
+        if (!(window as any).my_modal_3) return;
+        (window as any).my_modal_3.close();
         setShowAlert(false);
-        window.location.reload;
       }, 2000);
     }
   };
 
   return (
     <dialog id="my_modal_3" className="modal">
-      <div className="modal-box w-11/12 md:w-4/5">
+      <div className="modal-box max-w-full w-11/12 md:w-4/5">
         <form method="dialog">
           {/* if there is a button in form, it will close the modal */}
           <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
@@ -205,6 +206,28 @@ const AddNewModal = () => {
               required
             />
           </div>
+          <div className="form-control w-full max-w-xs">
+            <label className="label">
+              <span className="label-text">Categoría</span>
+            </label>
+            <select
+              className="select select-bordered"
+              name="category"
+              onChange={handleChange}
+            >
+              <option disabled selected>
+                Seleccionar
+              </option>
+              <option>Política</option>
+              <option>Social</option>
+              <option>Deportes</option>
+              <option>Actualidad</option>
+              <option>Judicial</option>
+              <option>Regional</option>
+              <option>Nacional</option>
+              <option>Emprendimiento</option>
+            </select>
+          </div>
           <div className="form-control w-full">
             <label className="label">
               <span className="label-text">Fecha</span>
@@ -238,13 +261,13 @@ const AddNewModal = () => {
           </div>
           <input
             type="submit"
-            value="Crear noticia"
+            value={loader ? "Cargando..." : "Crear noticia"}
             className="btn btn-success w-full"
             disabled={loader}
           />
         </form>
       </div>
-      {showAlert && <Alert text={alertValues.text} />}
+      {showAlert && <Alert text={alertValues.text} type={alertValues.type} />}
     </dialog>
   );
 };

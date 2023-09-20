@@ -81,7 +81,9 @@ export default function Login() {
           </button>
         </div>
       </div>
-      {showAlert && <Alert text="Usuario o contraseña incorrectos" />}
+      {showAlert && (
+        <Alert text="Usuario o contraseña incorrectos" type="error" />
+      )}
     </div>
   );
 }

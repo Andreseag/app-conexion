@@ -1,6 +1,13 @@
-const Alert = ({ text }: { text: string }) => {
+import { clsx } from "clsx";
+
+const Alert = ({ text, type }: { text: string; type: string }) => {
   return (
-    <div className="alert alert-error absolute w-11/12 md:w-96 bottom-2 right-0">
+    <div
+      className={clsx("alert  absolute w-11/12 md:w-96 bottom-2 right-0", {
+        "alert-error": type === "error",
+        "alert-success": type === "success",
+      })}
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         className="stroke-current shrink-0 h-6 w-6"
