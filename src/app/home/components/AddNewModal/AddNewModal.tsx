@@ -1,43 +1,45 @@
 "use client";
 
-import React, { ChangeEvent, useState } from "react";
-import { format } from "date-fns";
+import React, { ChangeEvent, use, useEffect, useState } from "react";
+import { format, set } from "date-fns";
 import DatePicker from "react-datepicker";
 import { Editor } from "react-draft-wysiwyg";
 import { EditorState, convertToRaw } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 
+import { uploadFile } from "@/firebase/config";
+
 // API
 import { createNew } from "@/api/news";
 
 // TYPES
-import { CreateNewBody } from "../types";
+import { CreateNewBody, Media } from "../types";
 import Alert from "@/components/Alert/Alert";
+
+const formatDate: string = "yyyy-MM-dd";
+
+// Initial Schema
+const initialNewBody: CreateNewBody = {
+  news: {
+    title: "",
+    description: "",
+    author: "",
+    publicationdate: format(new Date(), formatDate),
+    newsbody: "",
+    discharges: "",
+  },
+  media: [],
+};
 
 const AddNewModal = () => {
   const [newDate, setNewDate] = useState(new Date());
   const [showAlert, setShowAlert] = useState(false);
   const [alertValues, setAlertValues] = useState({ text: "", type: "" });
+  const [loader, setLoader] = useState(false);
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
-  const [file, setFile] = useState<File>();
-  const [newBody, setNewBody] = useState<CreateNewBody>({
-    news: {
-      title: "",
-      description: "",
-      author: "",
-      publicationdate: "",
-      newsbody: "",
-      discharges: "",
-    },
-    media: [
-      {
-        media:
-          "https://fastly.picsum.photos/id/11/2500/1667.jpg?hmac=xxjFJtAPgshYkysU_aqx2sZir-kIOjNR9vx0te7GycQ",
-        type: "IMAGEN,VIDEO,AUDIO",
-        reference: "CUALQUIER DATO DE SER REQUERIDO",
-      },
-    ],
-  });
+  const [filesUrls, setFileUrls] = useState<Media[]>([]);
+  const [filesList, setFilesList] = useState<File[]>([]);
+  const [newBody, setNewBody] = useState<CreateNewBody>(initialNewBody);
 
   const handleChange = (e: any) => {
     setNewBody({
@@ -49,10 +51,30 @@ const AddNewModal = () => {
     });
   };
 
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setFile(e.target.files[0]);
+  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const files: File[] = e.target.files as any;
+
+    if (files.length) {
+      setFilesList(files);
     }
+  };
+
+  const uploadFiles = async () => {
+    const files: File[] = [...filesList];
+    let results: Media[] = [];
+    files.map(async (file) => {
+      const result = await uploadFile(file);
+      results = [
+        ...results,
+        {
+          media: result,
+          type: "image",
+          reference: "news",
+        },
+      ];
+    });
+    console.log(results);
+    return results;
   };
 
   const onEditorStateChange = (editorState: EditorState) => {
@@ -69,7 +91,7 @@ const AddNewModal = () => {
 
   const pickerHandler = (date: any) => {
     setNewDate(date);
-    const formateDate = format(date, "yyyy-MM-dd");
+    const formateDate = format(date, formatDate);
     setNewBody({
       ...newBody,
       news: {
@@ -92,7 +114,8 @@ const AddNewModal = () => {
     return true;
   };
 
-  const handleButtonClick = async () => {
+  const handleButtonClick = async (e: any) => {
+    e.preventDefault();
     if (!validateForm()) {
       setAlertValues({
         text: "Todos los campos son obligatorios",
@@ -104,16 +127,20 @@ const AddNewModal = () => {
       }, 2000);
       return;
     }
+    setLoader(true);
+    const files = await uploadFiles();
     const response = await createNew(newBody);
-    if (response) {
+    console.log(response);
+    if (response === 200) {
       setAlertValues({
         text: "Noticia creada correctamente",
         type: "success",
       });
       setShowAlert(true);
+      setLoader(false);
       setTimeout(() => {
         setShowAlert(false);
-        window.location.reload();
+        // window.location.reload
       }, 2000);
     }
   };
@@ -202,7 +229,6 @@ const AddNewModal = () => {
               placeholder="Descripción de la noticia"
               name="discharges"
               onChange={handleChange}
-              required
             ></textarea>
             <label className="label"></label>
           </div>
@@ -210,6 +236,7 @@ const AddNewModal = () => {
             type="submit"
             value="Crear noticia"
             className="btn btn-success w-full"
+            disabled={loader}
           />
         </form>
       </div>

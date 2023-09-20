@@ -12,7 +12,7 @@ interface News {
   discharges: string;
 }
 
-interface Media {
+export interface Media {
   type: string;
   media: string;
   reference: string

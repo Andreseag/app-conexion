@@ -35,7 +35,7 @@ export async function createNew(body: CreateNewBody) {
     throw new Error("Failed to fetch data");
   }
 
-  return res.ok;
+  return res.status;
 }
 
 export async function updateNew(newId: number) {
