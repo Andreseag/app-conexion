@@ -149,7 +149,7 @@ const AddNewModal = () => {
       setLoader(false);
       setTimeout(() => {
         setShowAlert(false);
-        // window.location.reload
+        window.location.reload;
       }, 2000);
     }
   };

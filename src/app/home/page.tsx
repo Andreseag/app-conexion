@@ -5,8 +5,8 @@ import AddNewModal from "./components/AddNewModal/AddNewModal";
 
 export default function Login() {
   const showAddNewModal = () => {
-    // if (!(window as any).my_modal_3) return;
-    // (window as any).my_modal_3.showModal();
+    if (!(window as any).my_modal_3) return;
+    (window as any).my_modal_3.showModal();
   };
 
   return (

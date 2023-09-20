@@ -17,8 +17,8 @@ const NewsList = () => {
   };
 
   const confirmDeleteNew = async (id: number) => {
-    // if (!(window as any).my_modal_delete) return;
-    // (window as any).my_modal_delete.showModal();
+    if (!(window as any).my_modal_delete) return;
+    (window as any).my_modal_delete.showModal();
     setNewIdToDelete(id);
   };
 
@@ -26,8 +26,8 @@ const NewsList = () => {
     await deleteNew(newIdToDelete);
     const newsResponse = await getNews();
     setNews(newsResponse);
-    // if (!(window as any).my_modal_delete) return;
-    // (window as any).my_modal_delete.close();
+    if (!(window as any).my_modal_delete) return;
+    (window as any).my_modal_delete.close();
   };
 
   useEffect(() => {
