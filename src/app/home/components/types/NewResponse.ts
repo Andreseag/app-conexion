@@ -24,4 +24,5 @@ export interface News {
   publicationdate: string;
   newsbody: string;
   discharges: string;
+  category: string;
 }

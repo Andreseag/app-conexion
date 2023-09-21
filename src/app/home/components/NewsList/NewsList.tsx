@@ -73,7 +73,7 @@ const NewsList = () => {
                     {news?.result.map((item, i) => (
                       <tr key={i}>
                         <td>{item.news.title}</td>
-                        <td>{item.news.description}</td>
+                        <td>{item.news.category}</td>
                         <th>
                           <button className="btn btn-ghost btn-xs">
                             Editar

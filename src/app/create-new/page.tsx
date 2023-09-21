@@ -124,6 +124,7 @@ const CreateNew = () => {
       newBody.news.author === "" ||
       newBody.news.publicationdate === "" ||
       newBody.news.newsbody === "" ||
+      newBody.news.newsbody === "<p></p>\n" ||
       newBody.news.category === ""
     ) {
       return false;
@@ -166,7 +167,7 @@ const CreateNew = () => {
   };
 
   return (
-    <div className="create-new flex justify-center mt-8">
+    <div className="create-new flex justify-center my-8">
       <div className="create-new__container w-11/12 lg:w-8/12">
         <div className="text-sm breadcrumbs">
           <ul>
@@ -230,6 +231,7 @@ const CreateNew = () => {
               className="select select-bordered"
               name="category"
               onChange={handleChange}
+              value={newBody.news.category}
               required
             >
               <option disabled selected>
