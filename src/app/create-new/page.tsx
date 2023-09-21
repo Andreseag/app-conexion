@@ -1,10 +1,11 @@
 "use client";
 
 import React, { ChangeEvent, useState } from "react";
-import { format, set } from "date-fns";
+import { useRouter } from "next/navigation";
+import { v4 } from "uuid";
+import { format } from "date-fns";
 import DatePicker from "react-datepicker";
 import dynamic from "next/dynamic";
-// import { Editor } from "react-draft-wysiwyg";
 import { EditorState, convertToRaw } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 
@@ -18,10 +19,12 @@ import { uploadFile } from "@/firebase/config";
 import { createNew } from "@/api/news";
 
 // TYPES
-import { CreateNewBody, Media } from "../types";
 import Alert from "@/components/Alert/Alert";
+import { CreateNewBody, Media } from "../home/components/types";
+
+// COMPONENTS
 const EditorComponent = dynamic(
-  () => import("../EditorComponent/EditorComponent"),
+  () => import("../home/components/EditorComponent/EditorComponent"),
   {
     ssr: false,
   }
@@ -38,11 +41,13 @@ const initialNewBody: CreateNewBody = {
     publicationdate: format(new Date(), formatDate),
     newsbody: "",
     discharges: "",
+    category: "",
   },
   media: [],
 };
 
-const AddNewModal = () => {
+const CreateNew = () => {
+  const router = useRouter();
   const [newDate, setNewDate] = useState(new Date());
   const [showAlert, setShowAlert] = useState(false);
   const [alertValues, setAlertValues] = useState({ text: "", type: "" });
@@ -70,19 +75,22 @@ const AddNewModal = () => {
     }
   };
 
-  const uploadFiles = () => {
+  const uploadFiles = async () => {
     const files: File[] = [...filesList];
-    let results: Media[] = [];
-    files.map(async (file) => {
-      const result = await uploadFile(file);
-      results.push({
-        media: result,
-        type: "image",
-        reference: "news",
-      });
-      console.log(result);
+    const results = await Promise.all(
+      files.map(async (file) => {
+        const result = await uploadFile(file);
+        return {
+          media: result,
+          type: "image",
+          reference: "news",
+        };
+      })
+    );
+    setNewBody({
+      ...newBody,
+      media: [...results],
     });
-    console.log(results);
     return results;
   };
 
@@ -116,7 +124,8 @@ const AddNewModal = () => {
       newBody.news.description === "" ||
       newBody.news.author === "" ||
       newBody.news.publicationdate === "" ||
-      newBody.news.newsbody === ""
+      newBody.news.newsbody === "" ||
+      newBody.news.category === ""
     ) {
       return false;
     }
@@ -137,8 +146,11 @@ const AddNewModal = () => {
       return;
     }
     setLoader(true);
-    const files = await uploadFiles();
-    const response = await createNew(newBody);
+    const images = await uploadFiles();
+    const response = await createNew({
+      ...newBody,
+      media: [...images],
+    });
     console.log(response);
     if (response === 200) {
       setAlertValues({
@@ -148,23 +160,16 @@ const AddNewModal = () => {
       setShowAlert(true);
       setLoader(false);
       setTimeout(() => {
-        if (!(window as any).my_modal_3) return;
-        (window as any).my_modal_3.close();
+        router.push("/home");
         setShowAlert(false);
       }, 2000);
     }
   };
 
   return (
-    <dialog id="my_modal_3" className="modal">
-      <div className="modal-box max-w-full w-11/12 md:w-4/5">
-        <form method="dialog">
-          {/* if there is a button in form, it will close the modal */}
-          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
-            ✕
-          </button>
-        </form>
-        <h3 className="font-bold text-lg">Agregar noticia</h3>
+    <div className="create-new flex justify-center mt-12">
+      <div className="create-new__container w-11/12 lg:w-8/12">
+        <h1 className="font-bold text-3xl">Crear noticia</h1>
         <p className="py-4">Agrega la información para agregar tu noticia</p>
         <form onSubmit={handleButtonClick} className="form-add">
           <div className="form-control w-full">
@@ -178,6 +183,7 @@ const AddNewModal = () => {
               name="title"
               onChange={handleChange}
               required
+              value={newBody.news.title}
             />
           </div>
           <div className="form-control">
@@ -190,6 +196,7 @@ const AddNewModal = () => {
               name="description"
               onChange={handleChange}
               required
+              value={newBody.news.description}
             ></textarea>
             <label className="label"></label>
           </div>
@@ -204,6 +211,7 @@ const AddNewModal = () => {
               name="author"
               onChange={handleChange}
               required
+              value={newBody.news.author}
             />
           </div>
           <div className="form-control w-full max-w-xs">
@@ -214,6 +222,7 @@ const AddNewModal = () => {
               className="select select-bordered"
               name="category"
               onChange={handleChange}
+              required
             >
               <option disabled selected>
                 Seleccionar
@@ -266,10 +275,10 @@ const AddNewModal = () => {
             disabled={loader}
           />
         </form>
+        {showAlert && <Alert text={alertValues.text} type={alertValues.type} />}
       </div>
-      {showAlert && <Alert text={alertValues.text} type={alertValues.type} />}
-    </dialog>
+    </div>
   );
 };
 
-export default AddNewModal;
+export default CreateNew;
