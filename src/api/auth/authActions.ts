@@ -17,11 +17,11 @@ async function apiLogin(body: { username: string; password: string; }) {
     // This will activate the closest `error.js` Error Boundary
     throw new Error("Failed to fetch data");
   }
-
-  // Cookies.set('currentUser', JSON.stringify(res.json()));
+  const data = await res.json();
+  Cookies.set('currentUser', JSON.stringify(data));
   
 
-  return res.json();
+  return data;
 }
 
 export default apiLogin;

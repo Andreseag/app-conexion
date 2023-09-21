@@ -47,7 +47,7 @@ export default function Login() {
             </label>
             <input
               type="text"
-              placeholder="Type here"
+              placeholder="Usuario"
               className="input input-bordered w-full"
               onChange={(e) => handleChange(e)}
               name="username"
@@ -59,7 +59,7 @@ export default function Login() {
             </label>
             <input
               type="password"
-              placeholder="Type here"
+              placeholder="Contraseña"
               className="input input-bordered w-full"
               onChange={(e) => handleChange(e)}
               name="password"
