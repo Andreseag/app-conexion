@@ -18,7 +18,7 @@ async function apiLogin(body: { username: string; password: string; }) {
     throw new Error("Failed to fetch data");
   }
 
-  Cookies.set('currentUser', JSON.stringify(res.json()));
+  // Cookies.set('currentUser', JSON.stringify(res.json()));
   
 
   return res.json();

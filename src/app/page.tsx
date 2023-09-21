@@ -37,7 +37,7 @@ export default function Login() {
   };
 
   return (
-    <div className="login flex justify-center items-center h-screen">
+    <div className="login flex justify-center mt-20">
       <div className="card w-11/12 sm:w-3/4 lg:w-2/5 bg-base-100 shadow-xl">
         <div className="card-body">
           <h1 className="text-3xl font-bold text-gray-700">Iniciar sesión</h1>
