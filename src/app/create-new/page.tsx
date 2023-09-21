@@ -2,7 +2,7 @@
 
 import React, { ChangeEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-import { v4 } from "uuid";
+import Link from "next/link";
 import { format } from "date-fns";
 import DatePicker from "react-datepicker";
 import dynamic from "next/dynamic";
@@ -53,7 +53,6 @@ const CreateNew = () => {
   const [alertValues, setAlertValues] = useState({ text: "", type: "" });
   const [loader, setLoader] = useState(false);
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
-  const [filesUrls, setFileUrls] = useState<Media[]>([]);
   const [filesList, setFilesList] = useState<File[]>([]);
   const [newBody, setNewBody] = useState<CreateNewBody>(initialNewBody);
 
@@ -167,8 +166,17 @@ const CreateNew = () => {
   };
 
   return (
-    <div className="create-new flex justify-center mt-12">
+    <div className="create-new flex justify-center mt-8">
       <div className="create-new__container w-11/12 lg:w-8/12">
+        <div className="text-sm breadcrumbs">
+          <ul>
+            <li>
+              <Link href="/home">Inicio</Link>
+            </li>
+            <li>Crear noticia</li>
+          </ul>
+        </div>
+        <div className="divider" />
         <h1 className="font-bold text-3xl">Crear noticia</h1>
         <p className="py-4">Agrega la información para agregar tu noticia</p>
         <form onSubmit={handleButtonClick} className="form-add">

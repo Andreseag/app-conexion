@@ -1,3 +1,5 @@
+import Cookies from 'js-cookie';
+
 async function apiLogin(body: { username: string; password: string; }) {
   const API_URL = process.env.API;
   const loginUrl = `${API_URL}/login`;
@@ -15,6 +17,9 @@ async function apiLogin(body: { username: string; password: string; }) {
     // This will activate the closest `error.js` Error Boundary
     throw new Error("Failed to fetch data");
   }
+
+  Cookies.set('currentUser', JSON.stringify(res.json()));
+  
 
   return res.json();
 }
