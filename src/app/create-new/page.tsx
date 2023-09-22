@@ -21,6 +21,7 @@ import { createNew } from "@/api/news";
 // TYPES
 import Alert from "@/components/Alert/Alert";
 import { CreateNewBody, Media } from "../home/components/types";
+import { NewCategories } from "@/enums";
 
 // COMPONENTS
 const EditorComponent = dynamic(
@@ -41,7 +42,7 @@ const initialNewBody: CreateNewBody = {
     publicationdate: format(new Date(), formatDate),
     newsbody: "",
     discharges: "",
-    category: "",
+    category: NewCategories.POLITICA,
   },
   media: [],
 };
@@ -237,14 +238,14 @@ const CreateNew = () => {
               <option disabled selected>
                 Seleccionar
               </option>
-              <option>Política</option>
-              <option>Social</option>
-              <option>Deportes</option>
-              <option>Actualidad</option>
-              <option>Judicial</option>
-              <option>Regional</option>
-              <option>Nacional</option>
-              <option>Emprendimiento</option>
+              <option>{NewCategories.POLITICA}</option>
+              <option>{NewCategories.SOCIAL}</option>
+              <option>{NewCategories.DEPORTES}</option>
+              <option>{NewCategories.ACTUALIDAD}</option>
+              <option>{NewCategories.JUDICIAL}</option>
+              <option>{NewCategories.REGIONAL}</option>
+              <option>{NewCategories.NACIONAL}</option>
+              <option>{NewCategories.EMPRENDIMIENTO}</option>
             </select>
           </div>
           <div className="form-control w-full">
